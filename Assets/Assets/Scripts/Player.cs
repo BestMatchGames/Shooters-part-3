@@ -20,7 +20,6 @@ public class Player : MonoBehaviour
     public GameObject bullet;
     public GameObject explosion;
     public GameObject thruster;
-    public GameObject shield;
 
     // Start is called before the first frame update
     void Start()
@@ -100,26 +99,17 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(3f);
         speed = 6f;
         thruster.gameObject.SetActive(false);
-        gameManager.UpdatePowerupText("");
+        gameManager.UpdatePowerupText("Normal Speed");
+        gameManager.PlayPowerDown();
     }
 
     IEnumerator ShootingPowerDown()
     {
         yield return new WaitForSeconds(3f);
         shooting = 1;
-        gameManager.UpdatePowerupText("");
+        gameManager.UpdatePowerupText("Single Shot!");
+        gameManager.PlayPowerDown();
     }
-
-    IEnumerator ShieldDuration()
-    {
-
-    yield return new WaitForSeconds(5f);  
-    if (hasShield)     {
-        hasShield = false;
-        shield.SetActive(false);  
-        gameManager.UpdatePowerupText("");  
-    }
-}
 
     private void OnTriggerEnter2D(Collider2D whatIHit)
     {
@@ -152,8 +142,6 @@ public class Player : MonoBehaviour
                     //shield
                     gameManager.UpdatePowerupText("Picked up Shield!");
                     hasShield = true;
-                    shield.SetActive(true);
-                    StartCoroutine(ShieldDuration());
                     break;
             }
             Destroy(whatIHit.gameObject);
